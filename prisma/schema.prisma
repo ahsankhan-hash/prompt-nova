@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Prompt {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String
+  content     String
+  category    String
+  tags        String   // comma-separated
+  difficulty  String   @default("beginner") // beginner, intermediate, advanced
+  views       Int      @default(0)
+  likes       Int      @default(0)
+  copies      Int      @default(0)
+  isFeatured  Boolean  @default(false)
+  isTrending  Boolean  @default(false)
+  authorName  String   @default("PromptNova Team")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Tool {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+  category    String
+  icon        String   @default("Wrench")
+  isFeatured  Boolean  @default(false)
+  isPopular   Boolean  @default(false)
+  usageCount  Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String
+  content     String
+  category    String
+  tags        String
+  authorName  String   @default("PromptNova Team")
+  isPublished Boolean  @default(true)
+  views       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+  icon        String
+  promptCount Int      @default(0)
+  createdAt   DateTime @default(now())
+}
