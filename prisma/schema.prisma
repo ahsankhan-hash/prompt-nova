@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -14,8 +15,8 @@ model Prompt {
   description String
   content     String
   category    String
-  tags        String   // comma-separated
-  difficulty  String   @default("beginner") // beginner, intermediate, advanced
+  tags        String
+  difficulty  String   @default("beginner")
   views       Int      @default(0)
   likes       Int      @default(0)
   copies      Int      @default(0)
