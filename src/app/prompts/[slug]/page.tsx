@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic"
 import { db } from "@/lib/db"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
@@ -14,27 +15,14 @@ interface PromptPageProps {
 
 export async function generateMetadata({ params }: PromptPageProps): Promise<Metadata> {
   const { slug } = await params
-  const prompt = await db.prompt.findUnique({ where: { slug } })
-
-  if (!prompt) {
-    return {
-      title: "Prompt Not Found | PromptNova AI",
-    }
-  }
+  const title = slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ")
 
   return {
-    title: `${prompt.title} | PromptNova AI`,
-    description: prompt.description,
-    openGraph: {
-      title: `${prompt.title} | PromptNova AI`,
-      description: prompt.description,
-      type: "article",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: prompt.title,
-      description: prompt.description,
-    },
+    title: `${title} | PromptNova AI`,
+    description: `Discover best optimized ${title} prompts and templates to boost your productivity.`,
   }
 }
 

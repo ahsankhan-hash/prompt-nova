@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic"
 import { db } from "@/lib/db"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -40,28 +41,14 @@ interface BlogPostPageProps {
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params
-  const post = await db.blogPost.findUnique({ where: { slug } })
-
-  if (!post) {
-    return { title: "Post Not Found | PromptNova AI" }
-  }
+  const title = slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ")
 
   return {
-    title: `${post.title} | PromptNova AI Blog`,
-    description: post.excerpt,
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      type: "article",
-      publishedTime: post.createdAt.toISOString(),
-      authors: [post.authorName],
-      tags: post.tags.split(","),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt,
-    },
+    title: `${title} | PromptNova AI Blog`,
+    description: `Read about ${title} and explore expert guides, tutorials, and insights on PromptNova AI.`,
   }
 }
 

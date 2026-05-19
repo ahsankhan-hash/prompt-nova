@@ -1,8 +1,8 @@
-import { db } from '@/lib/db'
+import { prisma } from '@/lib/prisma'
 
 export async function GET() {
   try {
-    const categories = await db.category.findMany({
+    const categories = await prisma.category.findMany({
       orderBy: { promptCount: 'desc' },
     })
 

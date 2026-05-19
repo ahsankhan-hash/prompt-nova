@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic"
 import { db } from "@/lib/db"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
@@ -15,27 +16,14 @@ interface ToolPageProps {
 
 export async function generateMetadata({ params }: ToolPageProps): Promise<Metadata> {
   const { slug } = await params
-  const tool = await db.tool.findUnique({ where: { slug } })
-
-  if (!tool) {
-    return {
-      title: "Tool Not Found | PromptNova AI",
-    }
-  }
+  const title = slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ")
 
   return {
-    title: `${tool.name} - Free AI Tool | PromptNova AI`,
-    description: tool.description,
-    openGraph: {
-      title: `${tool.name} - Free AI Tool | PromptNova AI`,
-      description: tool.description,
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: tool.name,
-      description: tool.description,
-    },
+    title: `${title} - Free AI Tool | PromptNova AI`,
+    description: `Use the free ${title} AI-powered tool on PromptNova to boost your content creation workflow.`,
   }
 }
 
